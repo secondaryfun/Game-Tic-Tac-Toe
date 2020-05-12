@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.board {
+    width: 310px;
+    border: 5px red solid;
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 auto;
+
+}
+
+.box {
+    height: 100px;
+    width: 100px;
+    border: 2px red solid;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* background-image: url('images/x-icon.png') */
+}
+
+.results {
+    font-size: 2rem;
+    background: red;
+    font-weight: 600;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
