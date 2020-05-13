@@ -1,16 +1,20 @@
-let boxes = document.querySelectorAll('.box')
+let boxes = Array.from(document.querySelectorAll('.box'))
 let resultBox = document.querySelector('.results')
+resultBox.addEventListener('click', () => {
+    resultBox.classList.toggle('hidden')
+    window.location.reload()
+})
 console.log(boxes)
 let oTurn = true
 
+boxesMapped = boxes.sort((a,b) => a.dataset.value < b.dataset.value)
 
-boxes.forEach(box => {
+boxesMapped.forEach(box => {
     box.addEventListener('click', e =>{
         //get box data
-        let index = parseInt(e.target.dataset.index)
         let owner = e.target.dataset.owner
-
-        if (!owner) {
+        console.log(e.target.dataset.index)
+        if (owner === '-') {
             if (oTurn) {
                 e.target.style.backgroundImage = `url('images/o-icon.png')`
                 oTurn = false
@@ -20,25 +24,27 @@ boxes.forEach(box => {
                 oTurn = true
                 e.target.dataset.owner = 'x'
             }
+            checkWin()
         }
-        checkWin()
     })
 })
 
 function checkWin() {
-    for (let i=1; i<10; i++) 
-    // console.log(boxes[i-1].dataset.index)
-        for (let j=1; j<10; j++) 
-            for (let k=1; k<10; k++) 
-                if (i != j && i != k && j != k) 
-                    if (i + j + k === 15) {
-                        console.log(boxes[i-1].dataset.owner)
-                        if (boxes[i-1].dataset.owner && boxes[i-1].dataset.owner === boxes[j-1].dataset.owner
-                            && boxes[j-1].dataset.owner === boxes[k-1].dataset.owner) {
-                            console.log(`Checking: ${i} - ${j} - ${k}`)
-                            resultBox.textContent = boxes[i-1].dataset.owner
-                            resultBox.classList.remove('hidden')
-                        }
-                                
+    let a,b,c
+    for (let i=0; i<9; i++) 
+        for (let j=0; j<9; j++) 
+            for (let k=0; k<9; k++) 
+                if (i + j + k === 12) 
+                if (i != j && i != k && j != k) {
+                    console.log(`${i}-${j}-${k} Values=${boxesMapped[i].dataset.value}-${boxesMapped[j].dataset.value}-${boxesMapped[k].dataset.value}`)
+                    // // console.log(`<${boxesMapped[i].dataset.index}-${boxesMapped[j].dataset.index}-${boxesMapped[k].dataset.index}:${boxesMapped[i].dataset.owner}-${boxesMapped[j].dataset.owner}-${boxesMapped[k].dataset.owner}`)
+                    // console.log(`${boxesMapped[i].dataset.index}-${boxesMapped[j].dataset.index}-${boxesMapped[k].dataset.index}:Values=${boxesMapped[i].dataset.value}-${boxesMapped[j].dataset.value}-${boxesMapped[k].dataset.value}:${boxesMapped[i].dataset.owner}.${boxesMapped[j].dataset.owner}.${boxesMapped[k].dataset.owner}`)
+                    if (boxesMapped[i].dataset.owner != '-'
+                        && boxesMapped[i].dataset.owner === boxesMapped[j].dataset.owner
+                        && boxesMapped[i].dataset.owner === boxesMapped[k].dataset.owner) {
+                        resultBox.textContent = `${boxesMapped[i].dataset.owner}'s WIN!`
+                        resultBox.classList.remove('hidden')
                     }
-    }
+                }
+    
+}
